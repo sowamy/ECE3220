@@ -15,22 +15,25 @@ int main( void )
 	scanf( "%f", &operand1 );
 
 	// Prompt to get operator
+	// ERROR: Acts funny when entering multiple invalid inputs for the operator
+	// ERROR: if 43, 45, 42, or 47 is entered for the operand, it will be interpreted as either +, -, *, or / respectively
 	while( operatorValid != 1 ) {	// Will continue as long as the operand entered is invalid
 		operatorValid = 1;
 		printf( "Enter Operator: " );	// Prompt to get second operand
 		getchar();
 		operator = getchar();
 		switch( (int)operator ) {
-		case 43:
+		case 43: // addition
 			operatorCode = 1;
 			break;
-		case 45:
+			break;
+		case 45: // subtraction
 			operatorCode = 2;
 			break;
-		case 42:
+		case 42: // division
 			operatorCode = 3;
 			break;
-		case 47:
+		case 47: // multiplication
 			operatorCode = 4;
 			break;
 		default:
