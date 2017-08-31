@@ -13,6 +13,8 @@ int main( void )
 	printf( "Enter radius of circle: \n--> " );
 	scanf( "%f", &radius );
 
+	// TODO radius check - negative
+
 	// Displays the area of the circle to the user
 	printf( "\n\nThe area of the circle is: %.4f", getCircleArea(radius) );
 
@@ -20,7 +22,4 @@ int main( void )
 } // END FUNCTION main
 
 // Takes the radius of a circle, and returns the area of the circle
-float getCircleArea( float radius )
-{
-	return PI*radius*radius;
-} // END FUNCTION getCircleArea
+float getCircleArea( float radius ) { return PI*radius*radius; }
