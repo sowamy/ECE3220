@@ -10,6 +10,8 @@ int main( void )
 	printf( "Enter the original price the product was brought for: \n--> " );
 	scanf( "%f", &originalPrice );
 
+	// TODO negative values
+
 	// Prompt to get the price the product sold for
 	// Assigns value to sellingPrice
 	printf( "\n\nEnter the price that the product was sold for: \n--> " );
