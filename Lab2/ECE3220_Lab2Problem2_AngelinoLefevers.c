@@ -38,19 +38,21 @@ void bitwiseOperations( int input, char* output );
 
  	printf( "\nTHE BINARY REPRESENTATION OF %d IS: ", rawInput );
  	for( i = 0; i < 9; i++ ) { printf( "%c", formattedOutput[ i ] ); }
+	printf( "\n" );
+	return 0;
 
  }
 
- void arithmaticOperations( int input, char* output )
+ short arithmaticOperations( int input )
  {
  	int currentValue = input;
- 	char* outputString = output + 8;
- 	short i = 0;
+	short binaryRep = 0;
+	short i = 0;
 
  	for( i = 0; i <= 8; i++ ) {
- 		*outputString = currentValue % 2;
- 		outputString--;
- 		currentValue /= 2 ;
+ 		binaryRep += currentValue % 2;
+		binaryRep *= 10;
+
  	}
  }
 
