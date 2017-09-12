@@ -21,6 +21,10 @@ int main( void )
     unsigned short on = 1;
 
     unsigned short value = 0;
+	
+	int value2 = 0;
+	int value3 = 0;
+	int max = 0;
 
     while( on )
     {
@@ -29,25 +33,33 @@ int main( void )
         value = 0;
 
         printf( "MAIN MENU\n1.FACTORIAL\n2.LEAP YEAR\n3.MAXIMUM\n4.DIVISION\n5.EXIT\n--> " );
-        menuChoice = getInput( 1 );
+        menuChoice = (short)getInput( 1 );
 
         switch( menuChoice )
         {
         case 1:
             printf( "\n\nFACTORIAL\n--> " );
-            getInput( 2 );
+            value = (short)getInput( 2 );
             printf( "%hu! IS %lu.\n\n", value, factorial( value ) );
             break;
         case 2:
             printf( "\n\nLEAP YEAR CHECK\n--> " );
-            scanf( "%hu", &value );
-            leapYearChecker( value ) ? printf( "%hu WAS A LEAP YEAR\n\n", value ) : printf( "%hu WAS NOT A LEAP YEAR\n\n", value );
+            value2 = getInput( 4 );
+            leapYearChecker( value2 ) ? printf( "\n%hu WAS A LEAP YEAR\n\n", value2 ) : printf( "\n%hu WAS NOT A LEAP YEAR\n\n", value2 );
             break;
         case 3:
-            printf( "Maximum" );
+            printf( "\n\nMAXIMUM VALUE\n\n1st VALUE:\n--> " );
+			value2 = getInput( 4 );
+			printf( "2nd VALUE:\n--> " );
+			value3 = getInput( 4 );
+			( value2 > value3 ) ? printf( "\n%d IS THE MAXIMUM VALUE\n\n", value2 ) : printf( "\n%d IS THE MAXIMUM VALUE\n\n", value3 );
             break;
         case 4:
-            printf( "Division" );
+            printf( "\n\nDIVISION\n1st VALUE\n--> " );
+			value2 = getInput( 4 );
+			printf( "2nd VALUE:\n--> " );
+			value3 = getInput( 3 );
+			printf( "\n%d DIVIDED BY %d IS %d\n\n", value2, value3, value2/value3 );
             break;
         case 5:
             on = 0;
@@ -62,19 +74,16 @@ int main( void )
 
 unsigned short getInput( unsigned short inputType )
 {
-    char rawInput[ 256 ];
-    int verifiedInput;
-    bool invalidInputFlag = false;
+    int rawInput = 0;
+    bool invalidInputFlag = true;
 
-    while( !invalidInputFlag )
+    while( invalidInputFlag == true )
     {
-    	// Originally used gets(), but that is invalid in linux environment
-        fgets( rawInput, 10, stdin );
-        printf( "%s", rawInput );
+		invalidInputFlag = false;
 
-        sscanf( rawInput, "%d", &verifiedInput );
+        scanf( "%d", &rawInput );
 
-        if( verifiedInput < 0 )
+        if( rawInput < 0 )
         {
         	invalidInputFlag = true;
             printf( "ERROR: INVALID INPUT. TRY AGAIN\n--> " );
@@ -82,18 +91,30 @@ unsigned short getInput( unsigned short inputType )
 
         switch( inputType ) {
            	case 1: // Main Menu
-           		if( verifiedInput > 5 ) {
+           		if( rawInput > 5 ) {
            			invalidInputFlag = true;
            			printf( "ERROR: THERE ARE NO MENU ITEMS REPRESENTED BY THIS VALUE. TRY AGAIN\n-->");
            		}
            		break;
            	case 2: // Factorial Checker
-           		if( verifiedInput > 12 ) {
+           		if( rawInput > 12 ) {
            			printf( "WARNING: ANY INTEGER GREATER THAN 12 WILL PRODUCE INVALID RESULTS\n" );
+				}
+				break;
+			case 3: // Division by 0 Checker
+				if( rawInput == 0 ) {
+					invalidInputFlag = true;					
+					printf( "ERROR: CANNOT DIVIDE BY 0\nTRY AGAIN\n--> " );
            		}
-        }
+				break;
+			case 4: // No Extra Checks
+				break;
+			default:
+				invalidInputFlag = true;
+				printf( "ERROR: IDK WHAT YOU DID, BUT IT AIN'T RIGHT.....YOU BIG BULLY!!!!" );
+		}
 	}
-    return (short)verifiedInput;
+    return rawInput;
 }
 
 unsigned long factorial( unsigned short value )
