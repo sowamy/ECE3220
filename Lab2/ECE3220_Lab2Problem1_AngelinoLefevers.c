@@ -37,34 +37,34 @@ int main( void )
 
         switch( menuChoice )
         {
-        case 1:
+        case 1: // Factorials
             printf( "\n\nFACTORIAL\n--> " );
             value = (short)getInput( 2 );
             printf( "%hu! IS %lu.\n\n", value, factorial( value ) );
             break;
-        case 2:
+        case 2: // Leap Year Checker
             printf( "\n\nLEAP YEAR CHECK\n--> " );
             value2 = getInput( 4 );
             leapYearChecker( value2 ) ? printf( "\n%hu WAS A LEAP YEAR\n\n", value2 ) : printf( "\n%hu WAS NOT A LEAP YEAR\n\n", value2 );
             break;
-        case 3:
+        case 3: // Maximum Value between two integers
             printf( "\n\nMAXIMUM VALUE\n\n1st VALUE:\n--> " );
 			value2 = getInput( 4 );
 			printf( "2nd VALUE:\n--> " );
 			value3 = getInput( 4 );
 			( value2 > value3 ) ? printf( "\n%d IS THE MAXIMUM VALUE\n\n", value2 ) : printf( "\n%d IS THE MAXIMUM VALUE\n\n", value3 );
             break;
-        case 4:
+        case 4: // Division between two integers
             printf( "\n\nDIVISION\n1st VALUE\n--> " );
 			value2 = getInput( 4 );
 			printf( "2nd VALUE:\n--> " );
 			value3 = getInput( 3 );
 			printf( "\n%d DIVIDED BY %d IS %.4f\n\n", value2, value3, (float)value2/(float)value3 );
             break;
-        case 5:
-            on = 0;
+        case 5: // Exits the program
+            on = 0; // Exits the main loop which runs the program
             break;
-        default:
+        default: // Unintended input
             printf( "ERROR" );
             break;
         }
@@ -72,10 +72,12 @@ int main( void )
     return 0;
 }
 
+// Used to get input from user and checking the input for validity before returning the value
 unsigned short getInput( unsigned short inputType )
 {
     int rawInput = 0;
-    bool invalidInputFlag = true;
+    bool invalidInputFlag = true;	// when this flag is true, this function will continue to ask user for input
+					// Note: only returns values when this flag is false - verified value
 
     while( invalidInputFlag == true )
     {
@@ -117,6 +119,7 @@ unsigned short getInput( unsigned short inputType )
     return rawInput;
 }
 
+// Used to calculate the factorial of value
 unsigned long factorial( unsigned short value )
 {
     int i = value;
@@ -129,6 +132,9 @@ unsigned long factorial( unsigned short value )
     return sum;
 }
 
+// Used to check if a given year is a leap year
+// Returns 1 if the year is a leap year
+// Returns 0 if the year is not a leap year
 unsigned short leapYearChecker( unsigned short value )
 {
     if( value % 4 ) {
