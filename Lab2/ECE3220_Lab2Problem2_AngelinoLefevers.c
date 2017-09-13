@@ -14,17 +14,15 @@ unsigned short* bitwiseOperations( int input );
  int main( void )
  {
  	int rawInput = 0;
- 	char formattedOutput[ 7 ];
- 	char* formattedOutputPtr = &formattedOutput[ 0 ];
  	unsigned short menuChoice = 0;
 	unsigned short* binaryRepresentation;
  	short i = 0;
 
  	printf( "ENTER INTEGER TO CONVERT\n--> " );
- 	fscanf( stdin, "%d", &rawInput );
+ 	scanf( "%d", &rawInput );
 
  	printf( "\nWHICH WAY SHOULD THE PROGRAM CONVERT\n1.ARITHMATIC OPERATIONS\n2.BITWISE OPERATIONS\n--> " );
- 	fscanf( stdin, "%hu", &menuChoice );
+ 	scanf( "%hu", &menuChoice );
 
  	switch( menuChoice ) {
  		case 1:
@@ -39,8 +37,8 @@ unsigned short* bitwiseOperations( int input );
 
  	printf( "\nTHE BINARY REPRESENTATION OF %d IS: ", rawInput );
 
-	for( i = 0; i < 7; i++ ) {
-		printf( "%hu", *binaryRepresentation );
+	for( i = 0; i < 8; i++ ) {
+		printf( "%0hu", *binaryRepresentation );
 		binaryRepresentation++;
 	} // END for
 
@@ -53,19 +51,48 @@ unsigned short* bitwiseOperations( int input );
  unsigned short* arithmaticOperations( int input )
  {
  	int currentValue = input;
-	unsigned short binaryRep[ 7 ] = { 0 };
-	unsigned short* binaryRepPtr = &binaryRep[ 0 ];
-	unsigned short i = 7;
+	unsigned short binaryRepRaw[ 8 ] = { 0 };
+	unsigned short binaryRep[ 8 ] = { 0 };
+	unsigned short* binaryRepPtr;
+	unsigned short temp = 0;
+	int i = 0;
+	int j = 7;
 
- 	for( i = 7; i >= 0; i-- ) {
- 		binaryRep[ i ] += currentValue % 2;
+ 	for( i = 0; i <= 8; i++ ) {
+ 		binaryRepRaw[ i ] = currentValue % 2;
 		currentValue /= 2;
+ 	} // END for
+
+ 	for( i = 0; i <= 8; i++ ) {
+ 		binaryRep[ i ] = binaryRepRaw[ j ];
+ 		j--;
  	}
+
+ 	binaryRepPtr = &binaryRep[ 0 ];
 
 	return binaryRepPtr;
  }
 
 unsigned short* bitwiseOperations( int input )
 {
+	unsigned short bitMasker = 128; 	// binary := 1000 0000
+	unsigned short binaryValue[ 8 ] = { 0 };
+	unsigned short* binaryValuePtr;
+	unsigned short i = 0;				// counter
 
+	for( i = 0; i < 8; i++ ) {
+
+		if( ( input & bitMasker ) == 0 ) {
+			binaryValue[ i ] = 0;
+		} else {
+			binaryValue[ i ] = 1;
+		}
+
+		bitMasker = bitMasker >> 1;
+	} // END for
+
+	binaryValuePtr = &binaryValue[ 0 ];
+
+	return binaryValuePtr;
 }
+
