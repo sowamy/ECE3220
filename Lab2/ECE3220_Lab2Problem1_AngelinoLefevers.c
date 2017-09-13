@@ -59,7 +59,7 @@ int main( void )
 			value2 = getInput( 4 );
 			printf( "2nd VALUE:\n--> " );
 			value3 = getInput( 3 );
-			printf( "\n%d DIVIDED BY %d IS %d\n\n", value2, value3, value2/value3 );
+			printf( "\n%d DIVIDED BY %d IS %.4f\n\n", value2, value3, (float)value2/(float)value3 );
             break;
         case 5:
             on = 0;
