@@ -1,0 +1,126 @@
+guest-eax0ps@ENGR-C1251-125:~$ cd ./Desktop/ECE3220/Lab4/Lab4_programs
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ls
+Lab4-ex1.c  Lab4-ex3.c  Lab4-ex5.c  Lab4-ex7.c  Lab4_SegFault_Example.c
+Lab4-ex2.c  Lab4-ex4.c  Lab4-ex6.c  Lab4-ex8.c
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ gcc -g Lab4_SegFault_Example.c
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 1
+x[1] = 1
+Segmentation fault (core dumped)
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ gdb ./a.out
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ./a.out...done.
+(gdb) run
+Starting program: /tmp/guest-eax0ps/Desktop/ECE3220/Lab4/Lab4_programs/a.out 
+Enter an integer between 0 to 9999: 100
+x[100] = 100
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004006c9 in tester (c=0x7fffffffcdb0, k=100) at Lab4_SegFault_Example.c:6
+6		c[10000]=1309;
+(gdb) backtrace
+#0  0x00000000004006c9 in tester (c=0x7fffffffcdb0, k=100) at Lab4_SegFault_Example.c:6
+#1  0x000000000040077b in main (argc=1, argv=0x7fffffffde48) at Lab4_SegFault_Example.c:22
+(gdb) list
+1	#include <stdio.h>
+2	#include <string.h>
+3	
+4	void tester(int* c, int k) {
+5		printf("x[%d] = %d\n", k, c[k]);
+6		c[10000]=1309;
+7	}
+8	
+9	int main(int argc, char* argv[]) {
+10		int i = 0, j, k;
+(gdb) 
+11		int x[1000];
+12		
+13		while(i < 1000){
+14			x[i] = i;
+15			i++;
+16		}
+17	
+18		printf("Enter an integer between 0 to 9999: ");
+19		fflush(stdout);
+20		scanf("%d",&k);
+(gdb) 
+21	
+22		tester(x, k);
+23	}
+(gdb) break 6
+Breakpoint 1 at 0x4006bf: file Lab4_SegFault_Example.c, line 6.
+(gdb) run
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /tmp/guest-eax0ps/Desktop/ECE3220/Lab4/Lab4_programs/a.out 
+Enter an integer between 0 to 9999: ^[[F
+x[0] = 0
+
+Breakpoint 1, tester (c=0x7fffffffcdb0, k=0) at Lab4_SegFault_Example.c:6
+6		c[10000]=1309;
+(gdb) print c[10000]
+Cannot access memory at address 0x8000000069f0
+(gdb) print c[5000]
+Cannot access memory at address 0x800000001bd0
+(gdb) print c[2000]
+$1 = 1329815373
+(gdb) print c[10]
+$2 = 10
+(gdb) print c[-50]
+$3 = -139443568
+(gdb) print c[11]
+$4 = 11
+(gdb) print c[1]
+$5 = 1
+(gdb) print c[1000]
+$6 = -8640
+(gdb) print c[999]
+$7 = 999
+(gdb) gdb out
+Undefined command: "gdb".  Try "help".
+(gdb) out
+Argument required (expression to compute).
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 12728] will be killed.
+
+Quit anyway? (y or n) y
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ gcc -g Lab4_SegFault_Example.c
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 1
+x[1] = 1
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 1000
+x[1000] = -1948386608
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 999
+x[999] = 999
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ gcc -g Lab4_SegFault_Example.c
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 999
+x[999] = 999
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 1000
+x[1000] = 518677456
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 1000
+x[1000] = 124754288
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ gcc -g Lab4_SegFault_Example.c
+guest-eax0ps@ENGR-C1251-125:~/Desktop/ECE3220/Lab4/Lab4_programs$ ./a.out
+Enter an integer between 0 to 9999: 1000
+x[1000] = 1309
+
