@@ -45,14 +45,14 @@ void Stock::buy( int num, double price )
 {
 	shares += num;
 	share_val = price;
-	total_val += ( num * price );
+	set_tot();
 }
 
 void Stock::sell( int num, double price )
 {
 	shares -= num;
 	share_val = price;
-	total_val -= ( num * price );
+	set_tot();
 }
 
 // Prints stock attributes to terminal screen
@@ -69,7 +69,7 @@ void Stock::printStockInfo( void )
 
 }
 
-// Getter Methods to Acess Stock Attributes in Outside Program
+// Getter Methods to Acess Stock Attributes 
 int Stock::getNumberOfShares( void ) { return shares; }
 double Stock::getSharePrice( void ) { return share_val; }
 double Stock::getTotalValue( void ) { return total_val; }
