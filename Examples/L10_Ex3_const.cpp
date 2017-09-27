@@ -1,6 +1,6 @@
 // L10_Ex3_const.cpp
 #include <iostream>
-#define EXAMPLE 1	// 1, 2, 3, 4, 5
+#define EXAMPLE 4	// 1, 2, 3, 4, 5
 using namespace std;
 
 int main(){
