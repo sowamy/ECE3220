@@ -28,6 +28,6 @@ int main(){
 
 	i = 20;
 	cout << "6) i: " << i << ", ri: " << ri << ", j: " << j << ", *k: " <<  *k << ", k: " << k << endl;
-	
+
 	return 0;
 }
