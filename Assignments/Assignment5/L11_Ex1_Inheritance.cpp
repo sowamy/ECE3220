@@ -115,14 +115,14 @@ class ProcessedSignal : public BaseSig{
 	private:
 		int *data;
 		int len; // Length
+		double avg;
 		int maxValue;
 		int minValue;
 
 	public:
 		ProcessedSignal();
 		~ProcessedSignal();
-
-		void processSignal();
+		void printInfo();
 		int getMaxValue() { return maxValue; };
 		int getMinValue() { return minValue; };
 };
@@ -130,27 +130,35 @@ class ProcessedSignal : public BaseSig{
 ProcessedSignal::ProcessedSignal() : BaseSig() {
 	getFileInfo();
 	len = length;
+	int sum = 0;
+
 	data = new int[ len ];
+
 	if( data == NULL ) {
 		cerr << "ERROR IN MEMORY ALLOCATION";
 	} else {
+		maxValue = raw_data[ 0 ];
+		minValue = raw_data[ 0 ];
 		for( int i = 0; i < len; i++ ) {
 			data[ i ] = raw_data[ i ];
+			if( maxValue < data[ i ] ) { maxValue = data[ i ]; }
+			if( minValue > data[ i ] ) { minValue = data[ i ]; }
+			sum += data[ i ];
 		}
+		avg = (double)sum / (double)len;
 	}
 }
 
 ProcessedSignal::~ProcessedSignal(){
+	cout << "Goodbye ProcessedSignal" << endl;
 	delete data;
 }
 
-void ProcessedSignal::processSignal( void ) {
-	maxValue = data[ 0 ];
-	minValue = data[ 0 ];
-	for( int i = 0; i < length; i++ ) {
-		if( maxValue < data[ i ] ) { maxValue = data[ i ]; }
-		if( minValue > data[ i ] ) { minValue = data[ i ]; }
-	}
+void ProcessedSignal::printInfo( void ){
+	cout << "\nLength: " << len << endl;
+	cout << "Average: " << avg << endl;
+	cout << "Maximum Value: " << maxValue << endl;
+	cout << "Minimum Value: " << minValue << endl;
 }
 
 // ------------------------------------------------------------------
@@ -262,12 +270,15 @@ int main(){
 	ptrB->printInfo();		// which version is used?
 	refB2.printInfo();		// which version is used?
 	cout << "--------------------------------------------" << endl;
-	ProcessedSignal psig;
-	psig.processSignal();
-	cout << "Max: " << psig.getMaxValue() << endl;
-	cout << "Min: " << psig.getMinValue() << endl;
+	BaseSig fsig; // BaseSig (Base Class) Object
+	fsig.getFileInfo();
+	cout << "\n1st Element: " << fsig.getRawValue( 0 ) << endl;
+	cout << "5th Element: " << fsig.getRawValue( 4 ) << endl;
+	cout << "10th Element: " << fsig.getRawValue( 9 ) << endl;
 	cout << "--------------------------------------------" << endl;
-
+	ProcessedSignal psig;
+	psig.printInfo();
+	cout << "--------------------------------------------" << endl;
 	return 0;
 
 }
