@@ -101,7 +101,7 @@ void BaseSig::getFileInfo() {
 	    for( int i = 0; i < l; i++ ) {
 	    	getline( file, line );
 	    	raw_data[ i ] = atoi( line.c_str() );	// Must use c_str function to allow string const_chat to be converted to an int
-	    	cout << "\nraw_data[" << i << "]: " << raw_data[ i ] << endl;
+	    	// cout << "\nraw_data[" << i << "]: " << raw_data[ i ] << endl;
 	    }
 
 	    file.close();
@@ -109,6 +109,50 @@ void BaseSig::getFileInfo() {
 		cout << "ERROR: FILE UNABLE TO BE OPENED" << endl;
 	}
 }
+// ------------------------------------------------------------------
+// -------- ProcessedSignal class and methods------------------------
+class ProcessedSignal : public BaseSig{
+	private:
+		int *data;
+		int len; // Length
+		int maxValue;
+		int minValue;
+
+	public:
+		ProcessedSignal();
+		~ProcessedSignal();
+
+		void processSignal();
+		int getMaxValue() { return maxValue; };
+		int getMinValue() { return minValue; };
+};
+
+ProcessedSignal::ProcessedSignal() : BaseSig() {
+	getFileInfo();
+	len = length;
+	data = new int[ len ];
+	if( data == NULL ) {
+		cerr << "ERROR IN MEMORY ALLOCATION";
+	} else {
+		for( int i = 0; i < len; i++ ) {
+			data[ i ] = raw_data[ i ];
+		}
+	}
+}
+
+ProcessedSignal::~ProcessedSignal(){
+	delete data;
+}
+
+void ProcessedSignal::processSignal( void ) {
+	maxValue = data[ 0 ];
+	minValue = data[ 0 ];
+	for( int i = 0; i < length; i++ ) {
+		if( maxValue < data[ i ] ) { maxValue = data[ i ]; }
+		if( minValue > data[ i ] ) { minValue = data[ i ]; }
+	}
+}
+
 // ------------------------------------------------------------------
 
 // --------- ExtendSig class and methods ----------------------------
@@ -188,37 +232,42 @@ void ExtendSig::printInfo() {
 
 // Main function. A few examples
 int main(){
-	BaseSig bsig1;
-	bsig1.getFileInfo();
+	BaseSig bsig1(5);
 	ExtendSig esig1(10);
 	cout << "# of objects created: " << bsig1.numObjects << endl
 		 << "# of objects created: " << esig1.numObjects << endl;
 	bsig1.printInfo();
 	esig1.printInfo();
 	cout << "--------------------------------------------" << endl;
-
+	
 	cout << endl << bsig1.getRawValue(3) << endl
 		 << esig1.getRawValue(7) << endl
 		 << esig1.getValue(7) << endl;
 	cout << "--------------------------------------------" << endl;
-
+	
 	cout << endl << esig1.setValue(7, 2.5) << endl
 		 << esig1.setValue(12, 2.0) << endl;
-
+		 
 	cout << endl << esig1.getValue(7) << endl;
 	esig1.printInfo();
 	cout << "--------------------------------------------" << endl;
-
+	
 	BaseSig *ptrB = &bsig1;	// pointer points to object of base class
 	BaseSig &refB = bsig1;  // reference to object of base class
 	ptrB->printInfo();		// which version is used?
 	refB.printInfo();		// which version is used?
-
+	
 	ptrB = &esig1;	// pointer points to the base part of the object of derived class
 	BaseSig &refB2 = esig1; // reference bound to the base part of esig1
 	ptrB->printInfo();		// which version is used?
 	refB2.printInfo();		// which version is used?
 	cout << "--------------------------------------------" << endl;
+	ProcessedSignal psig;
+	psig.processSignal();
+	cout << "Max: " << psig.getMaxValue() << endl;
+	cout << "Min: " << psig.getMinValue() << endl;
+	cout << "--------------------------------------------" << endl;
+
 	return 0;
 
 }
