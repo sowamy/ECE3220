@@ -15,11 +15,11 @@ class BaseSig{
 	private:
 		// neither derived classes nor other users
 		// can access private members
-	
+
 	protected:	// accessible by derived classes, not by other users.
 		int length;
-		int *raw_data;
-		
+        int *raw_data;
+
 	public:
 		BaseSig();		// default constructor.
 		BaseSig(int L);	// parametric constructor
@@ -61,7 +61,7 @@ int BaseSig::getRawValue(int pos) {
 	if(pos < 0)			// invalid index
 		return(raw_data[0]);
 	else if(pos >= length)	// invalid index
-		return(raw_data[length-1]);	
+		return(raw_data[length-1]);
 	else
 		return(raw_data[pos]);
 }
@@ -71,7 +71,7 @@ void BaseSig::printInfo() {
 }
 
 // Opens file and distributes contents into variable containers
-void BaseSig::getFileInfo() {	
+void BaseSig::getFileInfo() {
 	int l;
 	int maxMagnitude;
 	string line;
@@ -80,25 +80,33 @@ void BaseSig::getFileInfo() {
 	ifstream file;
 	// Change name of file to open another file
 	// Has to be done manually
-	file.open( "Raw_data_01.txt" );	// Opens file for processing
-	
+	file.open( "Raw_data_05.txt" );	// Opens file for processing
+
 	if ( file.is_open() )
 	{
+		// Loads the fist line of the text file to be loaded into string variable, information.
 		getline( file, information );
+		// Use istringstream to allow the first line of raw_data#.txt to be parsed
 		istringstream iss;
 		iss.str( information );
 		iss >> l;
 		iss >> maxMagnitude;
+
 		length = l;
 
-		BaseSig( length );
+        raw_data = new int[ l ];
+        if( raw_data == NULL ) { cerr << "Error in memory allocation"; }
 
+		// Loops through each element in raw_data#.txt text file, loading the values into the raw_data integer list class variable
 	    for( int i = 0; i < l; i++ ) {
 	    	getline( file, line );
 	    	raw_data[ i ] = atoi( line.c_str() );	// Must use c_str function to allow string const_chat to be converted to an int
+	    	cout << "\nraw_data[" << i << "]: " << raw_data[ i ] << endl;
 	    }
 
 	    file.close();
+	} else {
+		cout << "ERROR: FILE UNABLE TO BE OPENED" << endl;
 	}
 }
 // ------------------------------------------------------------------
@@ -106,19 +114,19 @@ void BaseSig::getFileInfo() {
 // --------- ExtendSig class and methods ----------------------------
 class ExtendSig : public BaseSig{ // ExtendSig is derived from class BaseSig
 //BaseSig is a public base class
-	private: 
+	private:
 		double average;		// add new data members
 		double *data;
-		
+
 	public:
 		ExtendSig(int L);	//derived classes need a new constructor
 		~ExtendSig();
-		
+
 		// define new member functions
 		double getValue(int pos);
 		int setValue(int pos, double val);
 		double getAverage();
-		
+
 		// redefine member function. Virtual keyword not needed
 		void printInfo();	// new standard: explicit "override" keyword can be used
 };
@@ -145,7 +153,7 @@ double ExtendSig::getValue(int pos) {
 	if(pos < 0)			// invalid index
 		return(data[0]);
 	else if(pos >= length)	// invalid index
-		return(data[length-1]);	
+		return(data[length-1]);
 	else
 		return(data[pos]);
 }
@@ -181,8 +189,36 @@ void ExtendSig::printInfo() {
 // Main function. A few examples
 int main(){
 	BaseSig bsig1;
-	cout << "--------------------------------------------" << endl;
 	bsig1.getFileInfo();
+	ExtendSig esig1(10);
+	cout << "# of objects created: " << bsig1.numObjects << endl
+		 << "# of objects created: " << esig1.numObjects << endl;
+	bsig1.printInfo();
+	esig1.printInfo();
+	cout << "--------------------------------------------" << endl;
+
+	cout << endl << bsig1.getRawValue(3) << endl
+		 << esig1.getRawValue(7) << endl
+		 << esig1.getValue(7) << endl;
+	cout << "--------------------------------------------" << endl;
+
+	cout << endl << esig1.setValue(7, 2.5) << endl
+		 << esig1.setValue(12, 2.0) << endl;
+
+	cout << endl << esig1.getValue(7) << endl;
+	esig1.printInfo();
+	cout << "--------------------------------------------" << endl;
+
+	BaseSig *ptrB = &bsig1;	// pointer points to object of base class
+	BaseSig &refB = bsig1;  // reference to object of base class
+	ptrB->printInfo();		// which version is used?
+	refB.printInfo();		// which version is used?
+
+	ptrB = &esig1;	// pointer points to the base part of the object of derived class
+	BaseSig &refB2 = esig1; // reference bound to the base part of esig1
+	ptrB->printInfo();		// which version is used?
+	refB2.printInfo();		// which version is used?
 	cout << "--------------------------------------------" << endl;
 	return 0;
+
 }
