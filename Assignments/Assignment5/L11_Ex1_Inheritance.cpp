@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <cstring>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -24,6 +28,8 @@ class BaseSig{
 		int getRawValue(int pos);
 		static int numObjects;	// static, only one member for the entire hierarchy
 		virtual void printInfo();
+		// Assignment 5
+		void getFileInfo();
 };
 
 int BaseSig::numObjects = 0;	// initialize static data member
@@ -62,6 +68,38 @@ int BaseSig::getRawValue(int pos) {
 
 void BaseSig::printInfo() {
 	cout << "\nLength: " << length << endl;
+}
+
+// Opens file and distributes contents into variable containers
+void BaseSig::getFileInfo() {	
+	int l;
+	int maxMagnitude;
+	string line;
+	string information;
+
+	ifstream file;
+	// Change name of file to open another file
+	// Has to be done manually
+	file.open( "Raw_data_01.txt" );	// Opens file for processing
+	
+	if ( file.is_open() )
+	{
+		getline( file, information );
+		istringstream iss;
+		iss.str( information );
+		iss >> l;
+		iss >> maxMagnitude;
+		length = l;
+
+		BaseSig( length );
+
+	    for( int i = 0; i < l; i++ ) {
+	    	getline( file, line );
+	    	raw_data[ i ] = atoi( line.c_str() );	// Must use c_str function to allow string const_chat to be converted to an int
+	    }
+
+	    file.close();
+	}
 }
 // ------------------------------------------------------------------
 
@@ -142,35 +180,9 @@ void ExtendSig::printInfo() {
 
 // Main function. A few examples
 int main(){
-	BaseSig bsig1(5);
-	ExtendSig esig1(10);
-	cout << "# of objects created: " << bsig1.numObjects << endl
-		 << "# of objects created: " << esig1.numObjects << endl;
-	bsig1.printInfo();
-	esig1.printInfo();
+	BaseSig bsig1;
 	cout << "--------------------------------------------" << endl;
-	
-	cout << endl << bsig1.getRawValue(3) << endl
-		 << esig1.getRawValue(7) << endl
-		 << esig1.getValue(7) << endl;
-	cout << "--------------------------------------------" << endl;
-	
-	cout << endl << esig1.setValue(7, 2.5) << endl
-		 << esig1.setValue(12, 2.0) << endl;
-		 
-	cout << endl << esig1.getValue(7) << endl;
-	esig1.printInfo();
-	cout << "--------------------------------------------" << endl;
-	
-	BaseSig *ptrB = &bsig1;	// pointer points to object of base class
-	BaseSig &refB = bsig1;  // reference to object of base class
-	ptrB->printInfo();		// which version is used?
-	refB.printInfo();		// which version is used?
-	
-	ptrB = &esig1;	// pointer points to the base part of the object of derived class
-	BaseSig &refB2 = esig1; // reference bound to the base part of esig1
-	ptrB->printInfo();		// which version is used?
-	refB2.printInfo();		// which version is used?
+	bsig1.getFileInfo();
 	cout << "--------------------------------------------" << endl;
 	return 0;
 }
