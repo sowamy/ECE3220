@@ -1,6 +1,8 @@
 // L11_Ex1_Inheritance.cpp
 // By Luis Rivera
 
+// Edited By: Angelino Lefevers
+
 #include <iostream>
 #include <cstring>
 #include <string>
@@ -122,11 +124,13 @@ class ProcessedSignal : public BaseSig{
 	public:
 		ProcessedSignal();
 		~ProcessedSignal();
+		void update() { ProcessedSignal(); };	// Normalizes data and variables
 		void printInfo();
 		int getMaxValue() { return maxValue; };
 		int getMinValue() { return minValue; };
 };
 
+// ProcessedSignal constructor - loads and processes data from BaseSig
 ProcessedSignal::ProcessedSignal() : BaseSig() {
 	getFileInfo();
 	len = length;
@@ -166,11 +170,13 @@ void ProcessedSignal::printInfo( void ){
 // --------- ExtendSig class and methods ----------------------------
 class ExtendSig : public BaseSig{ // ExtendSig is derived from class BaseSig
 //BaseSig is a public base class
-	private:
+	protected:
 		double average;		// add new data members
 		double *data;
+		int L;
 
 	public:
+		ExtendSig();
 		ExtendSig(int L);	//derived classes need a new constructor
 		~ExtendSig();
 
@@ -182,6 +188,22 @@ class ExtendSig : public BaseSig{ // ExtendSig is derived from class BaseSig
 		// redefine member function. Virtual keyword not needed
 		void printInfo();	// new standard: explicit "override" keyword can be used
 };
+
+ExtendSig::ExtendSig() : BaseSig() {
+	getFileInfo();
+	L = length;
+
+	data = new double[ L ];
+
+	if( data == NULL ) {
+		cerr << "ERROR IN MEMORY ALLOCATION";
+	} else {
+		for( int i = 0; i < L; i++ ) {
+			data[ i ] = (double)raw_data[ i ];
+		}
+		average = getAverage();
+	}
+}
 
 // Derived class constructor. Note how the Base constructor is called.
 ExtendSig::ExtendSig(int L) : BaseSig(L) {
@@ -237,7 +259,52 @@ void ExtendSig::printInfo() {
 		 << "Average: " << average << endl;
 }
 // ------------------------------------------------------------------
+// ----------- ProcessedSignal_v2 -----------------------------------
+class ProcessedSignal_v2 : public ExtendSig {
+	private:
+		double avg;
+		double *sample;
+		int lengthOfData;
+		double maxAmount;
+		double minAmount;
 
+	public:
+		ProcessedSignal_v2();
+		~ProcessedSignal_v2();
+
+		void update() { ProcessedSignal_v2(); };
+		void printInfo( void );
+};
+
+ProcessedSignal_v2::ProcessedSignal_v2() : ExtendSig() {
+	lengthOfData = L;
+	sample = new double[ lengthOfData ];
+	if( sample == NULL ) {
+		cerr << "Error in memory allocation" << endl;
+	} else {
+		maxAmount = data[ 0 ];
+		minAmount = data[ 0 ];
+		for( int i = 0; i < lengthOfData; i++ ) {
+			sample[ i ] = data[ i ];
+			if( maxAmount < sample[ i ] ) { maxAmount = sample[ i ]; }
+			if( minAmount > sample[ i ] ) { minAmount = sample[ i ]; }
+		}
+		avg = average;
+	}
+}
+
+ProcessedSignal_v2::~ProcessedSignal_v2() {
+	cout << "Goodbye ProcessedSignal_v2" << endl;
+	delete sample;
+}
+
+void ProcessedSignal_v2::printInfo( void ) {
+	cout << "\nLength: " << L << endl;
+	cout << "Average: " << avg << endl;
+	cout << "Maximum Value: " << maxAmount << endl;
+	cout << "Minimum Value: " << minAmount << endl;
+}
+// ------------------------------------------------------------------
 // Main function. A few examples
 int main(){
 	BaseSig bsig1(5);
@@ -278,6 +345,9 @@ int main(){
 	cout << "--------------------------------------------" << endl;
 	ProcessedSignal psig;
 	psig.printInfo();
+	cout << "--------------------------------------------" << endl;
+	ProcessedSignal_v2 psig_v2;
+	psig_v2.printInfo();
 	cout << "--------------------------------------------" << endl;
 	return 0;
 
