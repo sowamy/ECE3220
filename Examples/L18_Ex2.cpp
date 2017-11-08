@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
-#define EXAMPLE 4	// 1, 2, 3 or 4
+#define EXAMPLE 2	// 1, 2, 3 or 4
 
 using namespace std;
 
@@ -62,6 +62,18 @@ int main(int argc, char *argv[]){
 #endif
 	
 #if EXAMPLE == 2
+	/* WARNING: (message during compilation)
+	 * 	L18_Ex2.cpp: In function ‘int main(int, char**)’:
+		L18_Ex2.cpp:72:2: warning: exception of type ‘Type2’ will be caught [enabled by default]
+  		catch(Type2 o2){
+  		^
+		L18_Ex2.cpp:69:2: warning:    by earlier handler for ‘Type1’ [enabled by default]
+  		catch(Type1 o1){
+  		^
+
+	 * Catches base class <Type1> before derived class <Type2>
+	 * All error (Even negative values) are <Type1> instead of both as they should be
+	*/ 
 	catch(Type1 o1){
 		o1.mesg();
 	}
