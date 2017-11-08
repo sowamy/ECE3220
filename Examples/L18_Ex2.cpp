@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
-#define EXAMPLE 1	// 1, 2, 3 or 4
+#define EXAMPLE 4	// 1, 2, 3 or 4
 
 using namespace std;
 
