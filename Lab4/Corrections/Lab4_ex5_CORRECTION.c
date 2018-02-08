@@ -3,7 +3,7 @@
 void main()
 {
     char *a = "hey";
-    free( a );
-    a = "hello";   
+    a = "hello";
     printf("%s",a);
 }
+

@@ -2,7 +2,14 @@
 
 int factorial ( int num )
 {
-    return num * factorial( num - 1 );
+	/*
+	 * In the original program, the recursive function was never ending (created an infinite loop)
+	 * In the corrected program, the if statements provides a means to end the program
+	 */
+	if( num != 1 ) {
+		num *= factorial( num - 1 );
+	}
+    return num;
 }
 
 int main(void)
@@ -14,3 +21,4 @@ int main(void)
     printf("The factorial is %d ", ans );
     return 0;
 }
+

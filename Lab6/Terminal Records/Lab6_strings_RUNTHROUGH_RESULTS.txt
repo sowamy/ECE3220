@@ -1,0 +1,98 @@
+*****************************
+s1.empty(): 1
+s1.size(): 0
+s1[0]: 
+s1[3]: 
+s1[5]: �
+s1 + "word": word
+s1 == "word": 0
+s1 != "word": 1
+s1 < "word": 1
+s1 > "word": 0
+*****************************
+
+Enter a word:
+word
+
+*****************************
+s1.empty(): 0
+s1.size(): 4
+s1[0]: w
+s1[3]: d
+s1[5]: �
+s1 + "word": wordword
+s1 == "word": 1
+s1 != "word": 0
+s1 < "word": 0
+s1 > "word": 0
+*****************************
+
+word
+Hello
+World
+word
+HelloWorld
+
+*****************************
+line.empty(): 1
+line.size(): 0
+line[0]: 
+line[3]: 
+line[5]: 
+line + "word": word
+line == "word": 0
+line != "word": 1
+line < "word": 1
+line > "word": 0
+*****************************
+
+
+Enter some text:
+text
+
+*****************************
+line.empty(): 0
+line.size(): 4
+line[0]: t
+line[3]: t
+line[5]: 
+line + "word": textword
+line == "word": 0
+line != "word": 1
+line < "word": 1
+line > "word": 0
+*****************************
+
+text
+
+*****************************
+toupper: TEXT
+tolower: text
+Whitespace to '.': text
+*****************************
+
+
+Enter some text, finish it with an &:
+texting and driving is a bad habit &
+texting and driving is a bad habit 
+
+*****************************
+line.empty(): 0
+line.size(): 35
+line[0]: t
+line[3]: t
+line[5]: n
+line + "word": texting and driving is a bad habit word
+line == "word": 0
+line != "word": 1
+line < "word": 1
+line > "word": 0
+*****************************
+
+
+*****************************
+toupper: TEXTING AND DRIVING IS A BAD HABIT 
+tolower: texting and driving is a bad habit 
+Whitespace to '.': texting.and.driving.is.a.bad.habit.
+*****************************
+
